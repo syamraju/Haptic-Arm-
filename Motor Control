@@ -1,0 +1,107 @@
+int p1 = A0, p2 = A3; 
+int b1 = 3, a1 = 12;  
+int b2 = 2, a2 = 11;  
+int en_b =4, en_a = 13;
+int a = 0,k,val_k,val_a,n,val_j,val_h,h,j,p;
+void setup() {
+  pinMode(p1,INPUT);
+  pinMode(p2,INPUT);
+  pinMode(b1,OUTPUT);
+  pinMode(b2,OUTPUT);
+  pinMode(en_b,OUTPUT);
+  pinMode(a1,OUTPUT);
+  pinMode(a2,OUTPUT);
+  pinMode(en_a,OUTPUT);
+  Serial.begin(115200);
+}
+void loop() {
+  motor1();
+  motor2();
+}
+void motor1(){
+  Serial.print("Value of K :");
+  Serial.println(val_k);
+  //delay(100);
+
+  a = analogRead(p1);
+  val_a =ū map(a,0,1023,0,10000);
+
+  Serial.print("Value of K-A :");  
+  Serial.println(val_k-val_a);
+  n = (1023-a);
+  //delay(100);
+
+  if((val_k-val_a) == 0){
+    digitalWrite(en_b,LOW);
+    delayMicroseconds(n);
+    digitalWrite(b1,LOW);
+    digitalWrite(b2,LOW);
+    delayMicroseconds(a);
+  }
+  else if(((val_k-val_a)<0)){
+    digitalWrite(en_b,HIGH);
+    delayMicroseconds(n);
+    digitalWrite(b1,HIGH);
+    digitalWrite(b2,LOW);
+    delayMicroseconds(a);
+  }
+  else if(((val_k-val_a)>0)){
+    digitalWrite(en_b,HIGH);
+    delayMicroseconds(n);
+    digitalWrite(b1,LOW);
+    digitalWrite(b2,HIGH);
+    delayMicroseconds(a);
+  }
+
+  Serial.print("Value of a :");
+  Serial.println(val_a);
+ //delay(100);
+
+  k = a;
+  val_k = map(k,0,1023,0,10000);
+
+}
+void motor2(){
+  Serial.print("Value of K :");
+  Serial.println(val_j);
+  //delay(100);
+
+  h = analogRead(p2);
+  val_h = map(h,0,1023,0,10000);
+
+  Serial.print("Value of K-A :");  
+  Serial.println(val_j-val_h);
+  p = (1023-h);
+  //delay(100);
+
+  if((val_j-val_h) == 0){
+    digitalWrite(en_a,LOW);
+    delayMicroseconds(p);
+    digitalWrite(a1,LOW);
+    digitalWrite(a2,LOW);
+    delayMicroseconds(h);
+  }
+  else if(((val_j-val_h)<0)){
+    digitalWrite(en_a,HIGH);
+    delayMicroseconds(p);
+    digitalWrite(a1,HIGH);
+    digitalWrite(a2,LOW);
+    delayMicroseconds(h);
+  }
+  else if(((val_k-val_h)>0)){
+    digitalWrite(en_a,HIGH);
+    delayMicroseconds(p);
+    digitalWrite(a1,LOW);
+    digitalWrite(a2,HIGH);
+    delayMicroseconds(h);
+  }
+
+  Serial.print("Value of a :");
+  Serial.println(val_h);
+ //delay(100);
+
+  j = h;
+  val_j = map(j,0,1023,0,10000);
+
+}
+
